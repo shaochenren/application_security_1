@@ -1,0 +1,41 @@
+I used following command to complie my code and get the report
+gcc -g --coverage giftcardreader.c -o giftcardreader
+./giftcardreader 1 ./testcases/valid/crash1.gft
+./giftcardreader 1 ./testcases/valid/crash2.gft
+./giftcardreader 1 ./testcases/valid/hang.gft
+./giftcardreader 1 ./testcases/valid/cov1.gft
+./giftcardreader 1 ./testcases/valid/cov2.gft
+gcov giftcardreader  
+lcov -c -d . -o giftcardreader.info
+genhtml giftcardreader.info -o giftcardreader_reportwith12cov12
+
+
+CC=/path/to/afl-cc CXX=/path/to/afl-c++ ./configure --disable-shared
+/opt/homebrew/opt/llvm/bin
+CC=/Desktop//afl-cc CXX=/opt/homebrew/opt/llvm/bin/afl-c++ ./configure --disable-shared
+
+docker run -ti -v /home/user/Desktop/untitled folder/assignment-1-shaochenren/:/src aflplusplus/aflplusplus:4.05c
+
+/home/user/Downlaods/AFL/afl-cc
+first i complied the code without the cov1 and the cov2 files and the coverage is 50%
+
+second i complied the code with the cov1 and cov2 file the the coverage went yp to 59.4%
+
+for fuzz i am on the mac arm64 system so i used the order version of the AFL
+
+
+cov1:
+i set the type record to 1 and increase the number of records the improve the coverage so from 109 -120 and 255-266 line will be under coverage 
+because the the if condtion for record == 1 will trigger
+
+cov2:
+I increased the file's size, left the record type at 3, the code              :            
+ case 0x04: regs[arg2] = arg1; break; is covered
+
+fuzz1:
+After running in debug, I saw that this problem happened whenever a new file was read in, up until the eof condition. when result- the ret_val->num_bytes
+will be a garbage data, for how to fix, i create a condition to check non-positive and condition to exit
+
+fuzz2:
+The signal that case 0x03 and 0x10 instructions because an unsigned character was cast to a character. so if the value is the negative and the system will 
+crash like, for how to fix it we can add the unsigned char to fix it. 

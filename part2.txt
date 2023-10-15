@@ -1,0 +1,28 @@
+Crash1:
+
+when the num_bytes is negative or exceed the max of 2^32-1, it will crash, because the fread will not be able to read from the num_bytes. either because it is negative or it is integer overflow, and the error will occur,
+and it will cause the Segmentation fault
+For how to fix this: is to use the absoulte value to make sure the input is positive and use the double to give it more space
+
+
+Crash2:
+The crash2 is kinda tricky, i tested the same code on different "enviornment", the gitbash on windows11 didnt pass the make test check but when i test the same code on mac, it passed all the test, 
+because the fix for this problem will cause the other gft file fix crashed on gitbash(window11). i have the idea that if i convert the file pointer to the file descriptor and use the descriptor to get the file name,
+i will simply set the if condition to make sure the crash2 fix only works for that specific case.
+for the code in the file that " while (!feof(input_fd)) ", the loop will stops at the end of the file, if the file is too big and it may cause the num_byte overflow, so when the code is trying 
+to run fread(ptr, ret_val->num_bytes, 1, input_fd), it will be Segmentation fault.
+For how to fix this: check before fread to to find out that bytes allocated was appropriate and non-negative, and allocate the bytes suitable for a file, even if the file is too big, the fread will go as normal
+
+crash3:
+since crash2 is werid so this is a backup if the crash2 didnt get the points, i will come up with another crash and fix it, for crash3 in the line of the code 
+    unsigned char regs[16];
+    char *mptr = msg; // TODO: how big is this buffer?
+    unsigned char *pc = program;
+i think If we attempt to assign arg1 as a value that is outside of the bounds of the regs array 
+the Original one is only 16, and if we pass more than that it will cause Segmentation fault. 
+for how to fix, i think we can expand the limit to 128
+
+Hang:
+the unsigned int in the animate function, it should be non-negative, but in the case 0x09: pc += (char)arg1; if its negative it will cause the infi loop, so in the hang.gft, i just put in the
+negative and make sure its moving backwards
+For how to fix this: just use the unsigned char to make sure the error will not encounter again
